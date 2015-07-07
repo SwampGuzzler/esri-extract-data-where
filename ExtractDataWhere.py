@@ -395,6 +395,8 @@ class Tests(unittest.TestCase):
 		self.params.output_folder_name  = function_name
 
 		self.params.load_input_feature_format('Shapefile - SHP - .shp')
+
+		arcpy.env.scratchWorkspace = "test_LC"
 		
 		run_export(self.params)
 		self.assertTrue(os.path.exists(self.params.result_file))
@@ -404,6 +406,8 @@ class Tests(unittest.TestCase):
 		self.params.load_zip_file_name(function_name)
 		self.params.output_folder_name  = function_name
 
+		arcpy.env.scratchWorkspace = "test_LC"
+
 		self.params.load_input_feature_format('File Geodatabase - GDB - .gdb')
 		run_export(self.params)
 		self.assertTrue(os.path.exists(self.params.result_file))
@@ -412,6 +416,8 @@ class Tests(unittest.TestCase):
 		function_name = sys._getframe().f_code.co_name
 		self.params.load_zip_file_name(function_name)
 		self.params.output_folder_name  = function_name
+
+		arcpy.env.scratchWorkspace = "test_LC"
 
 		self.params.load_input_feature_format('Shapefile - SHP - .shp')
 		self.params.output_projection = 'WGS_1984'
@@ -423,6 +429,8 @@ class Tests(unittest.TestCase):
 		self.params.load_zip_file_name(function_name)
 		self.params.output_folder_name  = function_name
 
+		arcpy.env.scratchWorkspace = "test_LC"
+
 		self.params.load_input_feature_format('File Geodatabase - GDB - .gdb')
 		self.params.output_projection = 'WGS_1984'
 		run_export(self.params)
@@ -432,6 +440,8 @@ class Tests(unittest.TestCase):
 		function_name = sys._getframe().f_code.co_name
 		self.params.load_zip_file_name(function_name)
 		self.params.output_folder_name  = function_name
+
+		arcpy.env.scratchWorkspace = "test_LC"
 
 		self.params.input_feature_format = 'File Geodatabase - GDB - .gdb'
 		self.params.output_folder_name = 'TESTING_SETTING_DIRECTORY'
