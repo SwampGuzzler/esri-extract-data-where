@@ -222,6 +222,8 @@ def clipAndConvert(params):
 			describe = arcpy.Describe(job['layer'])
 			dataType = describe.DataType.lower()
 
+			arcpy.AddMessage(dataType)
+
 			if dataType in ["featurelayer", "rasterlayer", "featureclass"]:
 				if dataType == "rasterlayer":
 					clipRaster(job['layer'], params.input_raster_format, params.zip_folder_path, params.scratch_folder_path)
@@ -291,7 +293,12 @@ def arcgis_parameter_bootstrap():
 
 	params = ToolParameters()
 
+	arcpy.AddMessage('params')
+	arcpy.AddMessage(params)
+
 	raw_layers = arcpy.GetParameterAsText(0)
+	arcpy.AddMessage(raw_layers)
+	arcpy.AddMessage("raw_layers")
 	params.load_layers(raw_layers)
 
 	raw_input_feature_format = arcpy.GetParameterAsText(1)
@@ -308,6 +315,7 @@ def arcgis_parameter_bootstrap():
 	params.output_folder_name = arcpy.GetParameterAsText(5)
 	params.export_source_directory = arcpy.GetParameterAsText(6)
 
+	arcpy.AddMessage("we have the params")
 	return params
 
 class ToolParameters(object):
@@ -381,6 +389,9 @@ class Tests(unittest.TestCase):
 		self.params.output_projection = None
 		self.params.load_zip_file_name('test_export_where')
 		self.params.output_folder_name = 'spatial_data_export'
+		arcpy.AddMessage("TEST_DATA_GDB")
+		arcpy.AddMessage(TEST_DATA_GDB)
+		print TEST_DATA_GDB
 		self.params.export_source_directory = TEST_DATA_GDB
 		self.params.result_file = None
 
@@ -469,6 +480,7 @@ class Tests(unittest.TestCase):
 if __name__ == '__main__':
 	if arcpy.GetParameterAsText(0):
 		params = arcgis_parameter_bootstrap()
+		arcpy.AddMessage(params)
 		params.result_file, messages = run_export(params)
 		arcpy.SetParameterAsText(7, params.result_file)
 		arcpy.SetParameterAsText(8, json.dumps(messages))
