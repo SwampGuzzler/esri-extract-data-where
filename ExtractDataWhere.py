@@ -255,6 +255,7 @@ def get_results_virtual_path(resultsFilePath):
 
 def run_export(params):
 	try:
+		arcpy.AddMessage("beforee")
 		params.commit_properties()
 
 		if arcpy.CheckExtension("DataInteroperability") == "Available":
@@ -367,10 +368,11 @@ class ToolParameters(object):
 			self.zipfile_name = raw_zip_file_name
 
 	def commit_properties(self):
-
+		arcpy.AddMessage("inn")
 		if self.export_source_directory.lower().endswith('.sde'):
 			arcpy.ClearWorkspaceCache_management(self.export_source_directory)
 
+		arcpy.AddMessage("middle")
 		self.result_file = os.path.join(arcpy.env.scratchWorkspace, self.zipfile_name)
 		for job in self.export_jobs:
 			job['layer'] = os.path.join(self.export_source_directory, job['layer'])
@@ -399,6 +401,18 @@ class Tests(unittest.TestCase):
 
 	def tearDown(self):
 		self.params = None
+
+	def test_sde_export(self):
+		function_name = sys._getframe().f_code.co_name
+		self.params.load_zip_file_name(function_name)
+		self.params.output_folder_name  = function_name
+
+		arcpy.env.scratchWorkspace = "C:\Users\Administrator\Documents\scratch"
+
+		self.params.load_input_feature_format('Shapefile - SHP - .shp')
+		self.params.output_folder_name = 'data'
+		run_export(self.params)
+		self.assertTrue(os.path.exists(self.params.result_file))
 
 	def test_export_shp(self):
 		function_name = sys._getframe().f_code.co_name
